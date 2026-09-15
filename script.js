@@ -50,35 +50,19 @@
 
   /* ---------- cursor ---------- */
   const dot = document.querySelector('.cursor-dot');
-  const glow = document.querySelector('.cursor-glow');
   const coarse = window.matchMedia('(pointer: coarse)').matches;
 
-  if (!coarse && dot && glow) {
+  if (!coarse && dot) {
     document.body.classList.add('cursor-active');
-    let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
-    let seen = false;
+    let mx = innerWidth / 2, my = innerHeight / 2;
 
     document.addEventListener('mousemove', (e) => {
       mx = e.clientX; my = e.clientY;
-      if (!seen) { rx = mx; ry = my; seen = true; }
       dot.style.left = mx + 'px';
       dot.style.top = my + 'px';
       if (!document.body.classList.contains('cursor-ready')) {
         setTimeout(() => document.body.classList.add('cursor-ready'), 80);
       }
-    });
-
-    (function loop() {
-      rx += (mx - rx) * 0.08;
-      ry += (my - ry) * 0.08;
-      glow.style.left = rx + 'px';
-      glow.style.top = ry + 'px';
-      requestAnimationFrame(loop);
-    })();
-
-    document.querySelectorAll('a, button, summary, .work-card').forEach((el) => {
-      el.addEventListener('mouseenter', () => glow.classList.add('hovering'));
-      el.addEventListener('mouseleave', () => glow.classList.remove('hovering'));
     });
   }
 
