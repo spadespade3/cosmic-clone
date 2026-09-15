@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dan — Web Design, UI & Development</title>
+  <meta name="description" content="Custom websites, landing pages, and interfaces designed and built for businesses, creators, and brands. Designed and built by Dan.">
+  <meta property="og:title" content="Dan — Web Design, UI & Development">
+  <meta property="og:description" content="Websites that make your business look expensive. Custom websites, landing pages, and interfaces.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/shots/og.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%2318181b'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ffffff' font-family='Arial' font-weight='bold'>D</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="cursor cursor-dot"></div>
+  <div class="cursor cursor-glow"></div>
+
+  <!-- ambient background -->
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient-glow ambient-glow-a"></div>
+    <div class="ambient-glow ambient-glow-b"></div>
+    <div class="grain"></div>
+  </div>
+
+  <nav id="navbar">
+    <a href="#top" class="logo">Dan<span>.</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="btn btn-primary btn-sm nav-cta" data-open-form>Start a Project</button>
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main">
+
+    <!-- ================= HERO ================= -->
+    <header class="hero" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow">Web Design · UI · Development</p>
+        <h1 class="hero-title">Websites that make your business look <span class="grad-text">expensive</span>.</h1>
+        <p class="hero-sub">Custom websites, landing pages, and interfaces designed and built for businesses, creators, and brands.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" data-open-form>Start a Project →</button>
+          <a href="#work" class="btn btn-ghost">View My Work ↓</a>
+        </div>
+        <ul class="trust-micro">
+          <li>Custom-built</li>
+          <li>Mobile responsive</li>
+          <li>Built to launch</li>
+        </ul>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="stage">
+          <div class="mock mock-back">
+            <div class="mock-bar"></div>
+            <div class="mock-lines">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="mock-block"></div>
+          </div>
+          <div class="mock mock-front">
+            <div class="mock-bar"><span class="mock-dots"><i></i><i></i><i></i></span><span class="mock-url"></span></div>
+            <div class="mock-hero">
+              <span class="mock-kicker"></span>
+              <span class="mock-h mr-60"></span>
+              <span class="mock-h mr-35"></span>
+              <span class="mock-p mr-80"></span>
+              <span class="mock-p mr-50"></span>
+              <span class="mock-btn"></span>
+            </div>
+            <div class="mock-cards">
+              <i></i><i></i><i></i>
+            </div>
+          </div>
+          <div class="stage-grid"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= WORK ================= -->
+    <section class="section" id="work">
+      <div class="section-head reveal">
+        <p class="section-label">Selected Work</p>
+        <h2>A few things I've designed and built.</h2>
+      </div>
+
+      <div class="work-grid" id="workGrid"></div>
+    </section>
+
+    <!-- ================= SERVICES ================= -->
+    <section class="section" id="services">
+      <div class="section-head reveal">
+        <p class="section-label">Services</p>
+        <h2>What I build.</h2>
+      </div>
+
+      <div class="services-grid">
+        <article class="service-card reveal">
+          <span class="service-num">01</span>
+          <h3>Websites</h3>
+          <p>Custom websites designed around your brand and goals.</p>
+          <ul class="service-list">
+            <li>Landing pages</li>
+            <li>Business websites</li>
+            <li>Portfolio websites</li>
+            <li>Product pages</li>
+            <li>Responsive layouts</li>
+            <li>Deployment</li>
+          </ul>
+          <button class="btn btn-ghost btn-sm" data-open-form>Explore Web Design →</button>
+        </article>
+
+        <article class="service-card reveal">
+          <span class="service-num">02</span>
+          <h3>UI Design</h3>
+          <p>Interfaces designed to look clean, intuitive, and intentional.</p>
+          <ul class="service-list">
+            <li>Dashboards</li>
+            <li>Web apps</li>
+            <li>App interfaces</li>
+            <li>Design systems</li>
+            <li>Responsive UI</li>
+          </ul>
+          <button class="btn btn-ghost btn-sm" data-open-form>Explore UI Design →</button>
+        </article>
+
+        <article class="service-card reveal">
+          <span class="service-num">03</span>
+          <h3>Development</h3>
+          <p>Turning designs into functional, responsive websites.</p>
+          <ul class="service-list">
+            <li>Frontend development</li>
+            <li>Responsive implementation</li>
+            <li>Interactions</li>
+            <li>Performance-focused build</li>
+            <li>Deployment</li>
+          </ul>
+          <button class="btn btn-ghost btn-sm" data-open-form>Explore Development →</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= PROCESS ================= -->
+    <section class="section" id="process">
+      <div class="section-head reveal">
+        <p class="section-label">Process</p>
+        <h2>From idea to launch.</h2>
+      </div>
+
+      <ol class="process-steps">
+        <li class="process-step reveal">
+          <span class="process-num">01</span>
+          <h3>Brief</h3>
+          <p>Tell me what you're building, who it's for, and what you need.</p>
+        </li>
+        <li class="process-step reveal">
+          <span class="process-num">02</span>
+          <h3>Design</h3>
+          <p>I turn the idea into a visual direction and polished interface.</p>
+        </li>
+        <li class="process-step reveal">
+          <span class="process-num">03</span>
+          <h3>Build</h3>
+          <p>The approved design becomes a responsive, working website.</p>
+        </li>
+        <li class="process-step reveal">
+          <span class="process-num">04</span>
+          <h3>Refine</h3>
+          <p>Feedback is handled through defined revision rounds.</p>
+        </li>
+        <li class="process-step reveal">
+          <span class="process-num">05</span>
+          <h3>Launch</h3>
+          <p>The finished website is deployed and ready to use.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section class="section" id="about">
+      <div class="section-head reveal">
+        <p class="section-label">About</p>
+        <h2>Why work with me?</h2>
+        <p class="section-sub">I'm Dan — a designer and developer. I have one rule: every page should have a job to do, and I build it to do it.</p>
+      </div>
+
+      <div class="why-grid">
+        <article class="why-card reveal">
+          <h3>Custom, not copied</h3>
+          <p>Each project is designed specifically around its purpose instead of being dropped into a generic template.</p>
+        </article>
+        <article class="why-card reveal">
+          <h3>Design + development</h3>
+          <p>No throwaway mockups. Everything is designed and built so it can actually be launched and used.</p>
+        </article>
+        <article class="why-card reveal">
+          <h3>Direct communication</h3>
+          <p>One person, direct line. You tell me what you need and you get straight answers — no account managers.</p>
+        </article>
+        <article class="why-card reveal">
+          <h3>Honest scope</h3>
+          <p>I focus on websites, UI, and frontend development. If your project needs complex backend architecture, I'll tell you before we start.</p>
+        </article>
+      </div>
+
+      <p class="scope-note reveal">Not sure if we're a fit? I'd rather tell you "this isn't my lane" up front than take your money and disappear. If I can't build it well, I'll point you somewhere that can.</p>
+    </section>
+
+    <!-- ================= PRICING ================= -->
+    <section class="section" id="pricing">
+      <div class="section-head reveal">
+        <p class="section-label">Pricing</p>
+        <h2>Clear, scoped pricing.</h2>
+        <p class="section-sub">Every project includes a defined brief, design, build, and two revision rounds.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <article class="price-card reveal">
+          <h3>Landing Page</h3>
+          <p class="price-from">From <span class="price-amount">$150</span></p>
+          <p class="price-desc">A focused single-page website designed to convert.</p>
+          <ul class="price-perks">
+            <li>Custom design</li>
+            <li>Responsive implementation</li>
+            <li>Deployment available</li>
+            <li>2 revision rounds</li>
+          </ul>
+          <button class="btn btn-ghost" data-open-form>Start a Project →</button>
+        </article>
+
+        <article class="price-card featured reveal">
+          <span class="price-badge">Recommended</span>
+          <h3>Business Website</h3>
+          <p class="price-from">From <span class="price-amount">$300</span></p>
+          <p class="price-desc">A complete web presence with multiple pages.</p>
+          <ul class="price-perks">
+            <li>Multiple pages</li>
+            <li>Custom design</li>
+            <li>Responsive implementation</li>
+            <li>Deployment available</li>
+            <li>2 revision rounds</li>
+          </ul>
+          <button class="btn btn-primary" data-open-form>Start a Project →</button>
+        </article>
+
+        <article class="price-card reveal">
+          <h3>Custom Project</h3>
+          <p class="price-from">Let's talk</p>
+          <p class="price-desc">For more complex requirements and bigger ideas.</p>
+          <ul class="price-perks">
+            <li>Custom UI</li>
+            <li>Advanced interactions</li>
+            <li>Web applications</li>
+            <li>Larger websites</li>
+            <li>Special integrations</li>
+          </ul>
+          <button class="btn btn-ghost" data-open-form>Start a Project →</button>
+        </article>
+      </div>
+
+      <p class="pricing-note reveal">Prices above are a starting point and depend on the scope of your project. Deployment and hosting details are covered in the FAQ.</p>
+    </section>
+
+    <!-- ================= FAQ ================= -->
+    <section class="section" id="faq">
+      <div class="section-head reveal">
+        <p class="section-label">FAQ</p>
+        <h2>Questions, answered.</h2>
+      </div>
+
+      <div class="faq-list">
+        <details class="faq-item reveal">
+          <summary>What's included in a website?</summary>
+          <p>A custom design, responsive implementation that works across modern devices, and deployment so it's live. The exact scope depends on the package you choose.</p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>How long does a project take?</summary>
+          <p>The timeline depends on the scope, but you'll get a realistic estimate after the brief. Landing pages and single-page sites move fastest.</p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>How do revisions work?</summary>
+          <p>Each package includes two revision rounds on the design. Revisions are feedback-based and handled in defined rounds. Additional rounds are treated as extra scope.</p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>Do you provide hosting?</summary>
+          <p>Deployment is available on the chosen package. The domain is not included. Hosting is set up and explained during the project; you'll own your site and content. Renewal costs are handled directly by you through the hosting provider.</p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>Can you redesign an existing website?</summary>
+          <p>Yes. A redesign starts with reviewing what you have and works from there. It's a good fit for the custom project pricing.</p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>Can I request a custom project?</summary>
+          <p>Yes — if it fits the scope of what I build. Start a project and describe what you need; if it's not a fit, I'll tell you honestly.</p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>How do I start?</summary>
+          <p>Click Start a Project, fill out the brief, and send it. You'll hear back with next steps.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ================= FINAL CTA ================= -->
+    <section class="final-cta">
+      <div class="final-cta-inner reveal">
+        <p class="section-label">Start a project</p>
+        <h2>Have something in mind?</h2>
+        <p>Tell me what you're building. Whether it's a new business website, a landing page, or a custom interface, start by explaining what you need.</p>
+        <div class="final-cta-actions">
+          <button class="btn btn-primary btn-lg" data-open-form>Start a Project →</button>
+          <a href="#work" class="btn btn-ghost btn-lg">View My Work</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <a href="#top" class="logo">Dan<span>.</span></a>
+    <nav class="footer-links">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#about">About</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <p class="footer-note">© 2026 Dan. Web Design · UI · Development.</p>
+  </footer>
+
+  <!-- ================= COMMISSION FORM MODAL ================= -->
+  <div class="modal" id="formModal" role="dialog" aria-modal="true" aria-labelledby="formModalTitle" hidden>
+    <div class="modal-backdrop" data-close-form></div>
+    <div class="modal-panel">
+      <button class="modal-close" data-close-form aria-label="Close">✕</button>
+
+      <div id="formView">
+        <h2 id="formModalTitle">Start a project</h2>
+        <p class="modal-sub">Tell me what you're building and I'll get back to you with next steps.</p>
+
+        <form id="commissionForm" novalidate>
+          <div class="form-errors" id="formErrors" role="alert" tabindex="-1" hidden></div>
+
+          <div class="field">
+            <label for="f-name">Name</label>
+            <input type="text" id="f-name" name="name" autocomplete="name" required>
+            <label class="error-text" id="f-name-error" for="f-name">Please enter your name.</label>
+          </div>
+
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input type="email" id="f-email" name="email" autocomplete="email" required>
+            <label class="error-text" id="f-email-error" for="f-email">Please enter a valid email address.</label>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="f-type">Project type</label>
+              <select id="f-type" name="type" required>
+                <option value="" selected disabled>Choose one</option>
+                <option>Website</option>
+                <option>Landing Page</option>
+                <option>UI Design</option>
+                <option>Website Redesign</option>
+                <option>Custom</option>
+              </select>
+              <label class="error-text" id="f-type-error" for="f-type">Please choose a project type.</label>
+            </div>
+            <div class="field">
+              <label for="f-budget">Budget</label>
+              <select id="f-budget" name="budget">
+                <option value="" selected disabled>Choose one</option>
+                <option>Not sure yet</option>
+                <option>Under $150</option>
+                <option>$150 – $300</option>
+                <option>$300 – $600</option>
+                <option>$600+</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="f-desc">What do you need?</label>
+            <textarea id="f-desc" name="description" rows="5" required></textarea>
+            <label class="error-text" id="f-desc-error" for="f-desc">Please describe your project (at least a couple of sentences).</label>
+          </div>
+
+          <div class="field">
+            <label for="f-refs">Reference websites <span class="opt">(optional)</span></label>
+            <input type="text" id="f-refs" name="references">
+          </div>
+
+          <div class="field">
+            <label for="f-deadline">Deadline <span class="opt">(optional)</span></label>
+            <input type="text" id="f-deadline" name="deadline" placeholder="e.g. In four weeks">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Send Project Request →</button>
+        </form>
+      </div>
+
+      <div id="sentView" hidden>
+        <div class="sent-mark" aria-hidden="true">✓</div>
+        <h2 tabindex="-1">Request received.</h2>
+        <p class="modal-sub">Thanks for reaching out. I'll review your brief and get back to you with next steps and a quote.</p>
+        <button class="btn btn-ghost btn-block" data-close-form>Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PROJECT MODAL ================= -->
+  <div class="modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle" hidden>
+    <div class="modal-backdrop" data-close-project></div>
+    <div class="modal-panel">
+      <button class="modal-close" data-close-project aria-label="Close">✕</button>
+      <div id="projectContent"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
