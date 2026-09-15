@@ -11,7 +11,7 @@
   <meta property="og:image" content="https://spadespade3.github.io/cosmic-clone/assets/shots/og.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%2318181b'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ffffff' font-family='Arial' font-weight='bold'>D</text></svg>">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -19,23 +19,21 @@
 
   <a class="skip-link" href="#main">Skip to content</a>
 
-  
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
-  <!-- ambient background -->
+  <!-- film grain -->
   <div class="ambient" aria-hidden="true">
-    <div class="ambient-glow ambient-glow-a"></div>
-    <div class="ambient-glow ambient-glow-b"></div>
     <div class="grain"></div>
   </div>
 
   <nav id="navbar">
-    <a href="#top" class="logo">Dan<span>.</span></a>
+    <a href="#top" class="logo">Dan<span class="dot">.</span></a>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#work">Work</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#process">Process</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#work"><span class="n" aria-hidden="true">01</span>Work</a></li>
+      <li><a href="#services"><span class="n" aria-hidden="true">02</span>Services</a></li>
+      <li><a href="#process"><span class="n" aria-hidden="true">03</span>Process</a></li>
+      <li><a href="#about"><span class="n" aria-hidden="true">04</span>About</a></li>
+      <li><a href="#faq"><span class="n" aria-hidden="true">05</span>FAQ</a></li>
     </ul>
     <div class="nav-right">
       <button class="btn btn-primary btn-sm nav-cta" data-open-form>Start a Project</button>
@@ -50,8 +48,8 @@
     <!-- ================= HERO ================= -->
     <header class="hero" id="top">
       <div class="hero-copy">
-        <p class="eyebrow">Web Design · UI · Development</p>
-        <h1 class="hero-title">Websites that make your business look <span class="grad-text">expensive</span>.</h1>
+        <p class="eyebrow"><span class="line" aria-hidden="true"></span>Web Design · UI · Development</p>
+        <h1 class="hero-title">Websites that make your business look <em class="em">expensive</em>.</h1>
         <p class="hero-sub">Custom websites, landing pages, and interfaces designed and built for businesses, creators, and brands.</p>
         <div class="hero-actions">
           <button class="btn btn-primary" data-open-form>Start a Project →</button>
@@ -65,29 +63,17 @@
       </div>
 
       <div class="hero-visual" aria-hidden="true">
-        <div class="stage">
-          <div class="mock mock-back">
-            <div class="mock-bar"></div>
-            <div class="mock-lines">
-              <span></span><span></span><span></span>
-            </div>
-            <div class="mock-block"></div>
-          </div>
-          <div class="mock mock-front">
-            <div class="mock-bar"><span class="mock-dots"><i></i><i></i><i></i></span><span class="mock-url"></span></div>
-            <div class="mock-hero">
-              <span class="mock-kicker"></span>
-              <span class="mock-h mr-60"></span>
-              <span class="mock-h mr-35"></span>
-              <span class="mock-p mr-80"></span>
-              <span class="mock-p mr-50"></span>
-              <span class="mock-btn"></span>
-            </div>
-            <div class="mock-cards">
-              <i></i><i></i><i></i>
-            </div>
-          </div>
-          <div class="stage-grid"></div>
+        <div class="clg">
+          <div class="clg-grid"></div>
+          <figure class="clg-card clg-card-a">
+            <div class="clg-chrome"><span class="dots"><i></i><i></i><i></i></span><span class="clg-file">commission-studio.png</span></div>
+            <img src="assets/shots/commission-studio.png" alt="" loading="lazy">
+          </figure>
+          <figure class="clg-card clg-card-b">
+            <div class="clg-chrome"><span class="dots"><i></i><i></i><i></i></span><span class="clg-file">landing.png</span></div>
+            <img src="assets/shots/landing.png" alt="" loading="lazy">
+          </figure>
+          <span class="clg-note">current build <em>v2</em></span>
         </div>
       </div>
     </header>
@@ -95,7 +81,7 @@
     <!-- ================= WORK ================= -->
     <section class="section" id="work">
       <div class="section-head reveal">
-        <p class="section-label">Selected Work</p>
+        <p class="section-label"><span class="num" aria-hidden="true">01</span>Selected Work</p>
         <h2>A few things I've designed and built.</h2>
       </div>
 
@@ -105,15 +91,17 @@
     <!-- ================= SERVICES ================= -->
     <section class="section" id="services">
       <div class="section-head reveal">
-        <p class="section-label">Services</p>
+        <p class="section-label"><span class="num" aria-hidden="true">02</span>Services</p>
         <h2>What I build.</h2>
       </div>
 
-      <div class="services-grid">
-        <article class="service-card reveal">
+      <ol class="services-list">
+        <li class="service-row reveal">
           <span class="service-num">01</span>
-          <h3>Websites</h3>
-          <p>Custom websites designed around your brand and goals.</p>
+          <div class="service-main">
+            <h3>Websites</h3>
+            <p>Custom websites designed around your brand and goals.</p>
+          </div>
           <ul class="service-list">
             <li>Landing pages</li>
             <li>Business websites</li>
@@ -122,13 +110,17 @@
             <li>Responsive layouts</li>
             <li>Deployment</li>
           </ul>
-          <button class="btn btn-ghost btn-sm" data-open-form>Explore Web Design →</button>
-        </article>
+          <div class="service-cta">
+            <button class="btn btn-ghost btn-sm" data-open-form>Explore Web Design</button>
+          </div>
+        </li>
 
-        <article class="service-card reveal">
+        <li class="service-row reveal">
           <span class="service-num">02</span>
-          <h3>UI Design</h3>
-          <p>Interfaces designed to look clean, intuitive, and intentional.</p>
+          <div class="service-main">
+            <h3>UI Design</h3>
+            <p>Interfaces designed to look clean, intuitive, and intentional.</p>
+          </div>
           <ul class="service-list">
             <li>Dashboards</li>
             <li>Web apps</li>
@@ -136,13 +128,17 @@
             <li>Design systems</li>
             <li>Responsive UI</li>
           </ul>
-          <button class="btn btn-ghost btn-sm" data-open-form>Explore UI Design →</button>
-        </article>
+          <div class="service-cta">
+            <button class="btn btn-ghost btn-sm" data-open-form>Explore UI Design</button>
+          </div>
+        </li>
 
-        <article class="service-card reveal">
+        <li class="service-row reveal">
           <span class="service-num">03</span>
-          <h3>Development</h3>
-          <p>Turning designs into functional, responsive websites.</p>
+          <div class="service-main">
+            <h3>Development</h3>
+            <p>Turning designs into functional, responsive websites.</p>
+          </div>
           <ul class="service-list">
             <li>Frontend development</li>
             <li>Responsive implementation</li>
@@ -150,15 +146,17 @@
             <li>Performance-focused build</li>
             <li>Deployment</li>
           </ul>
-          <button class="btn btn-ghost btn-sm" data-open-form>Explore Development →</button>
-        </article>
-      </div>
+          <div class="service-cta">
+            <button class="btn btn-ghost btn-sm" data-open-form>Explore Development</button>
+          </div>
+        </li>
+      </ol>
     </section>
 
     <!-- ================= PROCESS ================= -->
     <section class="section" id="process">
       <div class="section-head reveal">
-        <p class="section-label">Process</p>
+        <p class="section-label"><span class="num" aria-hidden="true">03</span>Process</p>
         <h2>From idea to launch.</h2>
       </div>
 
@@ -194,25 +192,29 @@
     <!-- ================= ABOUT ================= -->
     <section class="section" id="about">
       <div class="section-head reveal">
-        <p class="section-label">About</p>
+        <p class="section-label"><span class="num" aria-hidden="true">04</span>About</p>
         <h2>Why work with me?</h2>
         <p class="section-sub">I'm Dan — a designer and developer. I have one rule: every page should have a job to do, and I build it to do it.</p>
       </div>
 
       <div class="why-grid">
         <article class="why-card reveal">
+          <span class="why-index" aria-hidden="true">i.</span>
           <h3>Custom, not copied</h3>
           <p>Each project is designed specifically around its purpose instead of being dropped into a generic template.</p>
         </article>
         <article class="why-card reveal">
+          <span class="why-index" aria-hidden="true">ii.</span>
           <h3>Design + development</h3>
           <p>No throwaway mockups. Everything is designed and built so it can actually be launched and used.</p>
         </article>
         <article class="why-card reveal">
+          <span class="why-index" aria-hidden="true">iii.</span>
           <h3>Direct communication</h3>
           <p>One person, direct line. You tell me what you need and you get straight answers — no account managers.</p>
         </article>
         <article class="why-card reveal">
+          <span class="why-index" aria-hidden="true">iv.</span>
           <h3>Honest scope</h3>
           <p>I focus on websites, UI, and frontend development. If your project needs complex backend architecture, I'll tell you before we start.</p>
         </article>
@@ -224,7 +226,7 @@
     <!-- ================= PRICING ================= -->
     <section class="section" id="pricing">
       <div class="section-head reveal">
-        <p class="section-label">Pricing</p>
+        <p class="section-label"><span class="num" aria-hidden="true">05</span>Pricing</p>
         <h2>Clear, scoped pricing.</h2>
         <p class="section-sub">Every project includes a defined brief, design, build, and two revision rounds.</p>
       </div>
@@ -279,7 +281,7 @@
     <!-- ================= FAQ ================= -->
     <section class="section" id="faq">
       <div class="section-head reveal">
-        <p class="section-label">FAQ</p>
+        <p class="section-label"><span class="num" aria-hidden="true">06</span>FAQ</p>
         <h2>Questions, answered.</h2>
       </div>
 
@@ -324,7 +326,7 @@
     <!-- ================= FINAL CTA ================= -->
     <section class="final-cta">
       <div class="final-cta-inner reveal">
-        <p class="section-label">Start a project</p>
+        <p class="section-label"><span class="num" aria-hidden="true">→</span>Start a project</p>
         <h2>Have something in mind?</h2>
         <p>Tell me what you're building. Whether it's a new business website, a landing page, or a custom interface, start by explaining what you need.</p>
         <div class="final-cta-actions">
@@ -337,7 +339,7 @@
   </main>
 
   <footer class="footer">
-    <a href="#top" class="logo">Dan<span>.</span></a>
+    <a href="#top" class="logo">Dan<span class="dot">.</span></a>
     <nav class="footer-links">
       <a href="#work">Work</a>
       <a href="#services">Services</a>

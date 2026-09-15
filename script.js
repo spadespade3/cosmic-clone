@@ -18,13 +18,19 @@
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- nav scroll state + mobile menu ---------- */
+  /* ---------- scroll progress + nav state ---------- */
   const navbar = document.getElementById('navbar');
   const burger = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
+  const progress = document.getElementById('scrollProgress');
 
   function onScroll() {
     navbar.classList.toggle('scrolled', window.scrollY > 20);
+    if (progress) {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+      progress.style.width = pct + '%';
+    }
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
@@ -49,20 +55,39 @@
   });
 
   /* ---------- scroll reveal ---------- */
-  const revealEls = document.querySelectorAll('.reveal');
-  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
-    revealEls.forEach((el) => el.classList.add('in'));
-  } else {
-    const ro = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-          ro.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-    revealEls.forEach((el) => ro.observe(el));
+  let ro = null;
+
+  function initReveal() {
+    const revealEls = document.querySelectorAll('.reveal');
+    const staggerMax = 6;
+    revealEls.forEach((el) => {
+      if (el.classList.contains('in')) return;
+      const siblings = Array.prototype.filter.call(el.parentElement.children, (s) => s.classList.contains('reveal'));
+      const idx = siblings.indexOf(el);
+      if (idx > 0 && idx <= staggerMax) {
+        el.classList.add('stagger-' + idx);
+      }
+    });
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+      revealEls.forEach((el) => el.classList.add('in'));
+      return;
+    }
+    if (!ro) {
+      ro = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+            ro.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+    }
+    revealEls.forEach((el) => {
+      if (!el.classList.contains('in')) ro.observe(el);
+    });
   }
+
+  initReveal();
 
   /* ---------- modals: open/close + focus trap ---------- */
   const formModal = document.getElementById('formModal');
@@ -185,7 +210,7 @@
       goal: 'Turn a visual concept into a functional business site with a real path from visitor to inquiry.',
       designed: 'Full landing structure: hero, portfolio, services, process, pricing, FAQ, and project request form.',
       built: 'Static site with interactive portfolio cards, detail modals, and a submission form wired to an email endpoint.',
-      tech: ['HTML', 'CSS', 'JavaScript', 'FormSubmit'],
+      tech: ['HTML', 'CSS', 'JavaScript', 'Web3Forms'],
       perks: ['Conversion-focused structure', 'Working project form', 'Accessible and responsive']
     }
   ];
@@ -193,7 +218,8 @@
   const workGrid = document.getElementById('workGrid');
 
   workGrid.innerHTML = projects.map((p, i) => `
-    <article class="work-card reveal" data-project="${i}">
+    <article class="work-card reveal${i === 0 ? ' featured' : ''}" data-project="${i}">
+      <span class="work-index" aria-hidden="true">0${i + 1}</span>
       <div class="work-preview">
         <img src="${p.image}" alt="${p.imageAlt}" loading="lazy">
       </div>
@@ -204,10 +230,12 @@
         </div>
         <h3>${p.title}</h3>
         <p>${p.desc}</p>
-        <button class="work-link" data-project-view="${i}">View Project →
+        <button class="work-link" data-project-view="${i}">View Project <span aria-hidden="true">→</span>
         </button>
       </div>
     </article>`).join('');
+
+  initReveal();
 
   workGrid.addEventListener('click', (e) => {
     const link = e.target.closest('[data-project-view]');
