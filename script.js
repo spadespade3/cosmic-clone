@@ -181,9 +181,10 @@
       image: 'assets/shots/portfolio.png',
       imageAlt: 'Preview of the Dan Portfolio one-page site',
       desc: 'A personal portfolio site with a dark, minimal identity — designed and built to be the homepage for this exact business.',
-      goal: 'Create a clean, single-page portfolio that could work as the business homepage for Dan.',
-      designed: 'Dark premium identity, restrained accent color, clear hierarchy between name, work, and contact.',
-      built: 'One-page HTML/CSS build. No frameworks, no build step — just files that load fast.',
+      challenge: 'A one-page personal site needed to feel premium and confident without relying on stock templates or filler — and it had to load fast.',
+      direction: 'Dark, minimal identity with a restrained accent, clear hierarchy between name, work, and contact, and no decorative clutter.',
+      build: 'One-page HTML/CSS build with no frameworks and no build step — a handful of static files.',
+      result: 'A deployable, responsive single-page site that now serves as this business homepage.',
       tech: ['HTML', 'CSS', 'Responsive design', 'Dark UI'],
       perks: ['Dark premium identity', 'Responsive layout', 'Built and deployable']
     },
@@ -194,9 +195,10 @@
       image: 'assets/shots/landing.png',
       imageAlt: 'Preview of the Landing Starter single-page layout',
       desc: 'A focused single-page landing layout with hero, features, and pricing sections — the backbone of most client work.',
-      goal: 'Build a reusable landing-page structure centered on a strong hero and a clear path to a call to action.',
-      designed: 'Hero-first layout with feature grid and pricing section, designed to guide a visitor toward one action.',
-      built: 'Static HTML/CSS landing page. Mobile responsive and dependency-free.',
+      challenge: 'Most businesses need one clear landing page — but starting from scratch each time is slow. The goal was a proven, reusable structure.',
+      direction: 'Hero-first layout with a feature grid and pricing section, built to guide a visitor toward exactly one action.',
+      build: 'Static HTML/CSS landing page. Mobile responsive and dependency-free, ready to adapt per client.',
+      result: 'A reusable landing skeleton that handles the common 80% of client landing work out of the box.',
       tech: ['HTML', 'CSS', 'Responsive design', 'Landing layout'],
       perks: ['Hero + features + pricing', 'Fully responsive', 'No framework, fast load']
     },
@@ -207,9 +209,10 @@
       image: 'assets/shots/commission-studio.png',
       imageAlt: 'Preview of the Commission Studio site (this website)',
       desc: 'The site you are looking at right now — a conversion-focused build with services, process, pricing, and a working brief form.',
-      goal: 'Turn a visual concept into a functional business site with a real path from visitor to inquiry.',
-      designed: 'Full landing structure: hero, portfolio, services, process, pricing, FAQ, and project request form.',
-      built: 'Static site with interactive portfolio cards, detail modals, and a submission form wired to an email endpoint.',
+      challenge: 'A visual-only concept needed to become a fully functional business site with a real path from visitor to inquiry.',
+      direction: 'Full landing structure: hero, portfolio, services, process, pricing, FAQ, and a project request form.',
+      build: 'Static site with interactive portfolio cards, detail modals, and a submission form wired to an email endpoint.',
+      result: 'A working, deployed site — visitor → inquiry flow is live, from landing page through to a form that actually delivers briefs.',
       tech: ['HTML', 'CSS', 'JavaScript', 'Web3Forms'],
       perks: ['Conversion-focused structure', 'Working project form', 'Accessible and responsive']
     }
@@ -230,7 +233,7 @@
         </div>
         <h3>${p.title}</h3>
         <p>${p.desc}</p>
-        <button class="work-link" data-project-view="${i}">View Project <span aria-hidden="true">→</span>
+        <button class="work-link" data-project-view="${i}">View case study <span aria-hidden="true">→</span>
         </button>
       </div>
     </article>`).join('');
@@ -253,16 +256,20 @@
         <div class="pd-meta">${p.category} · ${p.tag}</div>
 
         <div class="pd-section">
-          <h4>The goal</h4>
-          <p>${p.goal}</p>
+          <h4>The Challenge</h4>
+          <p>${p.challenge}</p>
         </div>
         <div class="pd-section">
-          <h4>What I designed</h4>
-          <p>${p.designed}</p>
+          <h4>The Direction</h4>
+          <p>${p.direction}</p>
         </div>
         <div class="pd-section">
-          <h4>What I built</h4>
-          <p>${p.built}</p>
+          <h4>The Build</h4>
+          <p>${p.build}</p>
+        </div>
+        <div class="pd-section">
+          <h4>The Result</h4>
+          <p>${p.result}</p>
         </div>
         <div class="pd-section">
           <h4>Tools & technologies</h4>

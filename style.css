@@ -719,6 +719,20 @@ nav#navbar.scrolled {
 
 .work-link:hover { color: var(--accent-strong); gap: 12px; }
 
+.work-cta {
+  text-align: center;
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--ink-secondary);
+}
+
+.work-cta p {
+  font-size: 15px;
+}
+
 /* ============================================================
    SERVICES
    ============================================================ */
@@ -889,6 +903,16 @@ nav#navbar.scrolled {
   font-size: 16px;
   max-width: 760px;
 }
+
+.proof-bar {
+  margin-top: 32px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+
+.proof-bar p { max-width: 600px; margin: 0 auto; }
 
 /* ============================================================
    PRICING
