@@ -1542,6 +1542,7 @@ label.error-text.show { display: block; }
 
   .hero-visual { min-height: 360px; }
   .clg { height: 360px; }
+  .clg-grid { inset: -48px -20px; }
   .clg-card-a { width: 86%; }
   .clg-card-b { width: 60%; }
   .clg-card-a img { height: 260px; }
