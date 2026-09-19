@@ -104,10 +104,10 @@ html.light {
   width: 34px;
   height: 34px;
   flex: 0 0 34px;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--line-brass);
   border-radius: 50%;
-  background: transparent;
-  color: var(--ink-dim);
+  background: var(--brass-soft);
+  color: var(--brass-bright);
   cursor: pointer;
   transition: border-color 0.3s, color 0.3s, background 0.3s, transform 0.3s var(--ease-out);
 }
@@ -121,8 +121,9 @@ html.light {
 
 .theme-toggle svg {
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: 17px;
+  height: 17px;
+  stroke-width: 2;
   transition: opacity 0.35s, transform 0.5s var(--ease-out);
 }
 
@@ -130,6 +131,18 @@ html.light {
 
 html.light .theme-toggle .ic-sun { opacity: 0; }
 html.light .theme-toggle .ic-moon { opacity: 1; }
+
+html.light .theme-toggle {
+  background: var(--ink);
+  border-color: rgba(28, 26, 22, 0.5);
+  color: #f6f4ee;
+}
+
+html.light .theme-toggle:hover {
+  background: var(--btn-bg);
+  border-color: var(--brass);
+  color: #ffffff;
+}
 
 html.theme-anim .theme-toggle svg { transform: rotate(90deg) scale(0.7); }
 
