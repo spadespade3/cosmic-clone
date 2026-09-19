@@ -34,6 +34,20 @@ html.js { scroll-behavior: smooth; }
   --amber: #d9a441;
   --green: #5bb884;
 
+  /* theme-referenced (swapped under html.light) */
+  --btn-bg: #f2f0eb;
+  --btn-ink: #0a0a0b;
+  --btn-brass-ink: #0a0a0b;
+  --nav-bg: rgba(9, 9, 10, 0.78);
+  --backdrop: rgba(5, 5, 6, 0.74);
+  --surface-tint: rgba(19, 19, 22, 0.35);
+  --cursor-ring: rgba(242, 240, 235, 0.28);
+  --stroke: rgba(242, 240, 235, 0.16);
+  --stroke-soft: rgba(242, 240, 235, 0.10);
+  --stroke-strong: rgba(242, 240, 235, 0.34);
+  --scroll-track: #23232a;
+  --scroll-hover: #33333c;
+
   /* typography */
   --disp: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
   --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -45,6 +59,116 @@ html.js { scroll-behavior: smooth; }
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ============================================================
+   LIGHT MODE — warm paper. Same architecture, inverted values.
+   ============================================================ */
+:root { color-scheme: dark; }
+
+html.light {
+  color-scheme: light;
+  --bg0: #f4f2ec;
+  --bg1: #efece4;
+  --bg2: #e9e6dc;
+  --surface: #ffffff;
+  --surface-raise: #faf8f2;
+  --line: rgba(28, 26, 22, 0.10);
+  --line-strong: rgba(28, 26, 22, 0.16);
+  --line-brass: rgba(166, 124, 58, 0.40);
+  --ink: #1c1a16;
+  --ink-dim: #575249;
+  --ink-mute: #8f897b;
+  --brass: #a67c3a;
+  --brass-bright: #c29a56;
+  --brass-soft: rgba(166, 124, 58, 0.14);
+  --btn-bg: #17150f;
+  --btn-ink: #f4f2ec;
+  --nav-bg: rgba(244, 242, 236, 0.82);
+  --backdrop: rgba(20, 18, 14, 0.55);
+  --surface-tint: rgba(233, 230, 220, 0.6);
+  --cursor-ring: rgba(28, 26, 22, 0.30);
+  --stroke: rgba(28, 26, 22, 0.18);
+  --stroke-soft: rgba(28, 26, 22, 0.12);
+  --stroke-strong: rgba(28, 26, 22, 0.32);
+  --scroll-track: #dbd7cc;
+  --scroll-hover: #c6c1b4;
+}
+
+/* theme-toggle — corner switch */
+.theme-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-dim);
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s, background 0.3s, transform 0.3s var(--ease-out);
+}
+
+.theme-toggle:hover {
+  border-color: var(--brass);
+  color: var(--brass-bright);
+  background: var(--brass-soft);
+  transform: translateY(-1px);
+}
+
+.theme-toggle svg {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  transition: opacity 0.35s, transform 0.5s var(--ease-out);
+}
+
+.theme-toggle .ic-moon { opacity: 0; }
+
+html.light .theme-toggle .ic-sun { opacity: 0; }
+html.light .theme-toggle .ic-moon { opacity: 1; }
+
+html.theme-anim .theme-toggle svg { transform: rotate(90deg) scale(0.7); }
+
+/* file:// static view has no JS wiring — don't offer a dead switch */
+html.file-view .theme-toggle { display: none; }
+
+/* view-transition — circular reveal from the toggle */
+::view-transition-group(root) {
+  animation-duration: 0.6s;
+  animation-timing-function: var(--ease-out);
+}
+::view-transition-new(root) {
+  animation-name: dd-reveal;
+  animation-duration: 0.6s;
+  animation-timing-function: var(--ease-out);
+}
+::view-transition-old(root) {
+  animation-name: dd-fade;
+  animation-duration: 0.3s;
+  animation-timing-function: var(--ease-out);
+}
+@keyframes dd-reveal {
+  from { clip-path: circle(0px at var(--reveal-x) var(--reveal-y)); }
+  to { clip-path: circle(200% at var(--reveal-x) var(--reveal-y)); }
+}
+@keyframes dd-fade {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* no-View-Transition fallback: cross-fade every themed property */
+html.theme-anim,
+html.theme-anim * {
+  transition: background-color 0.5s var(--ease-out),
+              color 0.5s var(--ease-out),
+              border-color 0.5s var(--ease-out),
+              box-shadow 0.5s var(--ease-out),
+              -webkit-text-stroke-color 0.5s,
+              opacity 0.5s var(--ease-out) !important;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -185,11 +309,11 @@ footer { position: relative; z-index: 3; }
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: var(--bg0); }
 ::-webkit-scrollbar-thumb {
-  background: #23232a;
+  background: var(--scroll-track);
   border: 3px solid var(--bg0);
   border-radius: 8px;
 }
-::-webkit-scrollbar-thumb:hover { background: #33333c; }
+::-webkit-scrollbar-thumb:hover { background: var(--scroll-hover); }
 
 /* ============================================================
    LOADER
@@ -311,7 +435,7 @@ html.cursor-on .cursor { opacity: 1; }
   height: 34px;
   margin: -17px 0 0 -17px;
   background: transparent;
-  border: 1px solid rgba(242, 240, 235, 0.28);
+  border: 1px solid var(--cursor-ring);
   transition: width 0.3s var(--ease-out), height 0.3s var(--ease-out),
               margin 0.3s var(--ease-out), border-color 0.3s, background 0.3s;
 }
@@ -362,7 +486,7 @@ nav#navbar {
 
 nav#navbar.scrolled {
   padding: 13px clamp(24px, 5vw, 56px);
-  background: rgba(9, 9, 10, 0.78);
+  background: var(--nav-bg);
   backdrop-filter: blur(18px) saturate(1.1);
   border-bottom-color: var(--line);
 }
@@ -509,13 +633,14 @@ nav#navbar.scrolled {
 .btn:hover span { transform: translateX(5px); }
 
 .btn-primary {
-  background: var(--ink);
-  color: #0a0a0b;
+  background: var(--btn-bg);
+  color: var(--btn-ink);
   font-weight: 500;
 }
 
 .btn-primary:hover {
   background: var(--brass-bright);
+  color: var(--btn-brass-ink);
   transform: translateY(-2px);
   box-shadow: 0 14px 32px rgba(195, 169, 126, 0.18);
 }
@@ -533,11 +658,12 @@ nav#navbar.scrolled {
 
 .btn-brass {
   background: var(--brass);
-  color: #0a0a0b;
+  color: var(--btn-brass-ink);
 }
 
 .btn-brass:hover {
   background: var(--brass-bright);
+  color: var(--btn-brass-ink);
   transform: translateY(-2px);
   box-shadow: 0 12px 28px rgba(195, 169, 126, 0.22);
 }
@@ -705,7 +831,7 @@ html.js .reveal[data-reveal="mask"].in {
   border-bottom: 1px solid var(--line);
   overflow: hidden;
   padding: 18px 0;
-  background: rgba(19, 19, 22, 0.35);
+  background: var(--surface-tint);
   margin: 0;
 }
 
@@ -828,7 +954,7 @@ html.js .reveal[data-reveal="mask"].in {
   line-height: 1;
   letter-spacing: -0.04em;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(242, 240, 235, 0.16);
+  -webkit-text-stroke: 1px var(--stroke);
   pointer-events: none;
   transition: color 0.4s var(--ease-out), -webkit-text-stroke 0.4s, transform 0.4s var(--ease-out);
 }
@@ -1174,7 +1300,7 @@ html:not(.cursor-on) .work-card:hover .work-index {
   line-height: 1;
   text-transform: uppercase;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(242, 240, 235, 0.10);
+  -webkit-text-stroke: 1px var(--stroke-soft);
   white-space: nowrap;
   user-select: none;
 }
@@ -1407,7 +1533,7 @@ html:not(.cursor-on) .work-card:hover .work-index {
   font-style: italic;
   font-weight: 400;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(242, 240, 235, 0.34);
+  -webkit-text-stroke: 1px var(--stroke-strong);
   transition: color 0.6s;
 }
 
@@ -1519,7 +1645,7 @@ html:not(.cursor-on) .work-card:hover .work-index {
 .modal-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(5, 5, 6, 0.74);
+  background: var(--backdrop);
   backdrop-filter: blur(8px);
   animation: backdropIn 0.25s ease;
 }

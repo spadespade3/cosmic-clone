@@ -53,6 +53,53 @@ import * as THREE from 'three';
   }
 
   /* ============================================================
+     THEME TOGGLE — dark/light with a circular view transition
+     ============================================================ */
+  const themeBtn = $('themeToggle');
+  const THEME_KEY = 'dd-theme';
+
+  function sync3DTheme(light) {
+    if (!coreMat) return;
+    coreMat.uniforms.uColor.value.set(light ? 0x2a2620 : 0x101013);
+    if (particles) particles.material.color.set(light ? 0x8f8677 : 0xcfc8ba);
+    slabs.forEach((m) => m.material.color.set(light ? 0x9a9078 : 0xe6e2d8));
+    if (rings[0]) rings[0].material.color.set(light ? 0x7d7666 : 0xffffff);
+    if (rings[1]) rings[1].material.color.set(light ? 0xa67c3a : 0xc3a97e);
+  }
+
+  function applyTheme(light) {
+    docEl.classList.toggle('light', !!light);
+    try { window.localStorage.setItem(THEME_KEY, light ? 'light' : 'dark'); } catch (_) {}
+    sync3DTheme(!!light);
+    if (themeBtn) {
+      themeBtn.setAttribute('aria-pressed', String(!!light));
+      themeBtn.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+    }
+  }
+
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const next = !docEl.classList.contains('light');
+      const r = themeBtn.getBoundingClientRect();
+      const px = Math.round(r.left + r.width / 2);
+      const py = Math.round(r.top + r.height / 2);
+      docEl.style.setProperty('--reveal-x', px + 'px');
+      docEl.style.setProperty('--reveal-y', py + 'px');
+      if (document.startViewTransition) {
+        document.startViewTransition(() => applyTheme(next));
+      } else {
+        docEl.classList.add('theme-anim');
+        applyTheme(next);
+        window.setTimeout(() => docEl.classList.remove('theme-anim'), 600);
+      }
+    });
+  }
+
+  try {
+    if (window.localStorage.getItem(THEME_KEY) === 'light') applyTheme(true);
+  } catch (_) {}
+
+  /* ============================================================
      CUSTOM CURSOR (fine pointers only)
      ============================================================ */
   const curDot = $('curDot');
@@ -691,6 +738,8 @@ import * as THREE from 'three';
         new THREE.PointsMaterial({ color: 0xcfc8ba, size: 0.028, transparent: true, opacity: 0.5, sizeAttenuation: true, depthWrite: false })
       );
       tower.add(particles);
+
+      sync3DTheme(docEl.classList.contains('light'));
 
       window.addEventListener('pointermove', (e) => {
         curNX = (e.clientX / window.innerWidth) * 2 - 1;
