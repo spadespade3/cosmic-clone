@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>document.documentElement.classList.add('js')</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dan — Web Design, UI & Development</title>
@@ -11,244 +12,297 @@
   <meta property="og:image" content="https://spadespade3.github.io/dandesigns/assets/shots/og.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%2318181b'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ffffff' font-family='Arial' font-weight='bold'>D</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23141416'/><text x='16' y='23' font-size='16' text-anchor='middle' fill='%23c3a97e' font-family='Arial' font-weight='bold'>D</text></svg>">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <!-- loading -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader-inner">
+      <span class="loader-bar"></span>
+      <span class="loader-text">INITIALIZING</span>
+    </div>
+  </div>
+  <script>
+    /* file:// fallback — without a server, module scripts are CORS-blocked,
+       so guarantee the loader can never trap a double-click launch, and make
+       the static view look intentional instead of broken. */
+    if (window.location.protocol === 'file:') {
+      var __de = document.documentElement;
+      __de.classList.add('file-view');
+      var __hint = document.createElement('div');
+      __hint.className = 'file-hint';
+      __hint.setAttribute('role', 'note');
+      var __t = document.createElement('span');
+      __t.textContent = 'Direct open limits JS — run start-site.bat for the full site.';
+      var __x = document.createElement('button');
+      __x.type = 'button';
+      __x.setAttribute('aria-label', 'Dismiss');
+      __x.textContent = '\u2715';
+      __x.onclick = function () { __hint.remove(); };
+      __hint.appendChild(__t);
+      __hint.appendChild(__x);
+      document.body.appendChild(__hint);
+    }
+    function __fallbackHideLoader() {
+      var l = document.getElementById('loader');
+      if (l && !window.__booted) {
+        l.classList.add('hide');
+        setTimeout(function () { if (l.parentNode) l.parentNode.removeChild(l); }, 700);
+      }
+    }
+    if (document.readyState === 'complete') __fallbackHideLoader();
+    else window.addEventListener('load', __fallbackHideLoader, { once: true });
+  </script>
 
-  <!-- film grain -->
+  <!-- custom cursor -->
+  <div class="cursor" id="curDot" aria-hidden="true"></div>
+  <div class="cursor ring" id="curRing" aria-hidden="true"></div>
+
+  <!-- ambient layers -->
   <div class="ambient" aria-hidden="true">
     <div class="grain"></div>
+    <div class="glow glow-tl"></div>
+    <div class="glow glow-br"></div>
   </div>
 
+  <!-- scroll progress -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- nav -->
   <nav id="navbar">
-    <a href="#top" class="logo">Dan<span class="dot">.</span></a>
+    <a href="#top" class="logo">DAN<span class="dot">.</span></a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#work"><span class="n" aria-hidden="true">01</span>Work</a></li>
       <li><a href="#services"><span class="n" aria-hidden="true">02</span>Services</a></li>
       <li><a href="#process"><span class="n" aria-hidden="true">03</span>Process</a></li>
       <li><a href="#about"><span class="n" aria-hidden="true">04</span>About</a></li>
-      <li><a href="#faq"><span class="n" aria-hidden="true">05</span>FAQ</a></li>
+      <li><a href="#pricing"><span class="n" aria-hidden="true">05</span>Pricing</a></li>
+      <li><a href="#faq"><span class="n" aria-hidden="true">06</span>FAQ</a></li>
     </ul>
     <div class="nav-right">
-      <button class="btn btn-primary btn-sm nav-cta" data-open-form>Start a Project</button>
+      <button class="btn btn-sm btn-brass nav-cta" data-open-form>Start a Project</button>
       <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
         <span></span><span></span><span></span>
       </button>
     </div>
   </nav>
 
+  <!-- 3D canvas -->
+  <canvas id="stage" class="stage" aria-hidden="true"></canvas>
+
   <main id="main">
 
-    <!-- ================= HERO ================= -->
+    <!-- =============== HERO =============== -->
     <header class="hero" id="top">
+      <div class="hero-glow" aria-hidden="true"></div>
       <div class="hero-copy">
-        <p class="eyebrow"><span class="line" aria-hidden="true"></span>Web Design · UI · Development</p>
-        <h1 class="hero-title">Websites that make your business look <em class="em">expensive</em>.</h1>
-        <p class="hero-sub">I design <em>and</em> build custom sites end to end — no handoffs, no templates, no build-tool bloat. One person owns the whole thing, so your site actually ships.</p>
-        <div class="hero-actions">
-          <button class="btn btn-primary" data-open-form>Start a Project →</button>
-          <a href="#work" class="btn btn-ghost">See the work ↓</a>
+        <p class="eyebrow" data-plx="0.15">
+          <span class="line"></span>
+          <span class="mono">DAN DESIGN — WEB · UI · DEV</span>
+          <span class="mono dim">v3.0 — MD</span>
+        </p>
+        <h1 class="hero-title" data-plx="0.08">
+          MAKE YOUR<br>BUSINESS LOOK<br><em>expensive.</em>
+        </h1>
+        <p class="hero-sub" data-plx="0.05">
+          Custom websites designed and built end to end. No templates, no handoffs.
+          One person owns the whole thing until it ships.
+        </p>
+        <div class="hero-actions" data-plx="0.02">
+          <button class="btn btn-primary" data-open-form>Start a project <span aria-hidden="true">&rarr;</span></button>
+          <a href="#work" class="btn btn-ghost">See the work <span aria-hidden="true">&darr;</span></a>
         </div>
-        <ul class="trust-micro">
-          <li>Design + code in one</li>
-          <li>No templates</li>
-          <li>Shipping, not mockups</li>
-        </ul>
-      </div>
-
-      <div class="hero-visual" aria-hidden="true">
-        <div class="clg">
-          <div class="clg-grid"></div>
-          <figure class="clg-card clg-card-a">
-            <div class="clg-chrome"><span class="dots"><i></i><i></i><i></i></span><span class="clg-file">commission-studio.png</span></div>
-            <img src="assets/shots/commission-studio.png" alt="" loading="lazy">
-          </figure>
-          <figure class="clg-card clg-card-b">
-            <div class="clg-chrome"><span class="dots"><i></i><i></i><i></i></span><span class="clg-file">landing.png</span></div>
-            <img src="assets/shots/landing.png" alt="" loading="lazy">
-          </figure>
-          <span class="clg-note">current build <em>v2</em></span>
-        </div>
+        <p class="hero-meta mono" data-plx="0.10">
+          &mdash; DAN.DESIGNS &middot; EST. 2026 &middot; CHI&#536;IN&#258;U
+        </p>
       </div>
     </header>
 
-    <!-- ================= WORK ================= -->
-    <section class="section" id="work">
-      <div class="section-head reveal">
-        <p class="section-label"><span class="num" aria-hidden="true">01</span>Selected Work</p>
-        <h2>A few things I've designed and built.</h2>
-        <p class="section-sub">Every project is labeled honestly — self-initiated or practice work is marked as such, and each one breaks down the challenge, direction, and result.</p>
+    <!-- =============== MARQUEE =============== -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>WEB DESIGN</span><i class="sep"></i>
+        <span>UI / UX</span><i class="sep"></i>
+        <span>DEVELOPMENT</span><i class="sep"></i>
+        <span>LANDING PAGES</span><i class="sep"></i>
+        <span>INTERACTIONS</span><i class="sep"></i>
+        <span>SYSTEMS</span><i class="sep"></i>
+        <span>WEB DESIGN</span><i class="sep"></i>
+        <span>UI / UX</span><i class="sep"></i>
+        <span>DEVELOPMENT</span><i class="sep"></i>
+        <span>LANDING PAGES</span><i class="sep"></i>
+        <span>INTERACTIONS</span><i class="sep"></i>
+        <span>SYSTEMS</span><i class="sep"></i>
       </div>
+    </div>
 
+    <!-- =============== WORK =============== -->
+    <section class="section" id="work">
+      <div class="section-head reveal" data-reveal="mask">
+        <p class="section-label mono"><span class="num" aria-hidden="true">01</span>Selected Work</p>
+        <h2>A few things I've<br><em>designed and built.</em></h2>
+        <p class="section-sub">Every project is labeled honestly. Self-initiated or practice work is marked as such — each one breaks down the challenge, direction, and result.</p>
+      </div>
       <div class="work-grid" id="workGrid"></div>
-
       <div class="work-cta reveal">
-        <p>Have a project that looks like one of these?</p>
-        <button class="btn btn-ghost" data-open-form>Tell me about it →</button>
+        <p class="mono">Have a project that looks like one of these?</p>
+        <button class="btn btn-ghost" data-open-form>Tell me about it &rarr;</button>
       </div>
     </section>
 
-    <!-- ================= SERVICES ================= -->
+    <!-- =============== SERVICES =============== -->
     <section class="section" id="services">
-      <div class="section-head reveal">
-        <p class="section-label"><span class="num" aria-hidden="true">02</span>Services</p>
+      <div class="section-head reveal" data-reveal="mask">
+        <p class="section-label mono"><span class="num" aria-hidden="true">02</span>Services</p>
         <h2>What I build.</h2>
       </div>
-
       <ol class="services-list">
-        <li class="service-row reveal">
+        <li class="service-row reveal" data-reveal="line">
           <span class="service-num" aria-hidden="true">01</span>
-          <div class="service-main">
-            <h3>Websites</h3>
-            <p>Custom websites designed around your brand and goals.</p>
-          </div>
-          <ul class="service-list">
-            <li>Landing pages</li>
-            <li>Business websites</li>
-            <li>Portfolio websites</li>
-            <li>Product pages</li>
-            <li>Responsive layouts</li>
-            <li>Deployment</li>
+          <div class="service-main"><h3>Design</h3><p>Interfaces and websites designed around your brand and goals.</p></div>
+          <ul class="service-items mono">
+            <li>Landing pages</li><li>Business websites</li><li>Portfolio sites</li><li>Product pages</li><li>Design systems</li><li>Responsive UI</li>
           </ul>
-          <div class="service-cta">
-            <button class="btn btn-ghost btn-sm" data-open-form>Explore Web Design</button>
-          </div>
+          <button class="btn btn-ghost btn-sm service-cta" data-open-form>Explore Web Design &rarr;</button>
         </li>
-
-        <li class="service-row reveal">
+        <li class="service-row reveal" data-reveal="line">
           <span class="service-num" aria-hidden="true">02</span>
-          <div class="service-main">
-            <h3>UI Design</h3>
-            <p>Interfaces designed to look clean, intuitive, and intentional.</p>
-          </div>
-          <ul class="service-list">
-            <li>Dashboards</li>
-            <li>Web apps</li>
-            <li>App interfaces</li>
-            <li>Design systems</li>
-            <li>Responsive UI</li>
+          <div class="service-main"><h3>Development</h3><p>Turning designs into functional, performant websites.</p></div>
+          <ul class="service-items mono">
+            <li>Frontend development</li><li>Responsive implementation</li><li>Interactions & motion</li><li>Performance build</li><li>Deployment</li>
           </ul>
-          <div class="service-cta">
-            <button class="btn btn-ghost btn-sm" data-open-form>Explore UI Design</button>
-          </div>
+          <button class="btn btn-ghost btn-sm service-cta" data-open-form>Explore Development &rarr;</button>
         </li>
-
-        <li class="service-row reveal">
+        <li class="service-row reveal" data-reveal="line">
           <span class="service-num" aria-hidden="true">03</span>
-          <div class="service-main">
-            <h3>Development</h3>
-            <p>Turning designs into functional, responsive websites.</p>
-          </div>
-          <ul class="service-list">
-            <li>Frontend development</li>
-            <li>Responsive implementation</li>
-            <li>Interactions</li>
-            <li>Performance-focused build</li>
-            <li>Deployment</li>
+          <div class="service-main"><h3>Systems</h3><p>Reusable structures and design tokens for consistent output.</p></div>
+          <ul class="service-items mono">
+            <li>Component libraries</li><li>Token architecture</li><li>Style documentation</li><li>Brand consistency</li>
           </ul>
-          <div class="service-cta">
-            <button class="btn btn-ghost btn-sm" data-open-form>Explore Development</button>
-          </div>
+          <button class="btn btn-ghost btn-sm service-cta" data-open-form>Explore Systems &rarr;</button>
+        </li>
+        <li class="service-row reveal" data-reveal="line">
+          <span class="service-num" aria-hidden="true">04</span>
+          <div class="service-main"><h3>Production</h3><p>Getting the finished build deployed and ready to use.</p></div>
+          <ul class="service-items mono">
+            <li>SEO essentials</li><li>Analytics-ready</li><li>Deployment</li><li>Handoff & ownership</li>
+          </ul>
+          <button class="btn btn-ghost btn-sm service-cta" data-open-form>Explore Production &rarr;</button>
         </li>
       </ol>
     </section>
 
-    <!-- ================= PROCESS ================= -->
+    <!-- =============== PROCESS =============== -->
     <section class="section" id="process">
-      <div class="section-head reveal">
-        <p class="section-label"><span class="num" aria-hidden="true">03</span>Process</p>
+      <div class="section-head reveal" data-reveal="mask">
+        <p class="section-label mono"><span class="num" aria-hidden="true">03</span>Process</p>
         <h2>From idea to launch.</h2>
       </div>
-
       <ol class="process-steps">
         <li class="process-step reveal">
-          <span class="process-num" aria-hidden="true">01</span>
+          <span class="process-num mono" aria-hidden="true">01</span>
           <h3>Brief</h3>
-          <p>Tell me what you're building, who it's for, and what you need.</p>
+          <p class="mono">Tell me what you're building, who it's for, and what you need.</p>
         </li>
         <li class="process-step reveal">
-          <span class="process-num" aria-hidden="true">02</span>
+          <span class="process-num mono" aria-hidden="true">02</span>
           <h3>Design</h3>
-          <p>I turn the idea into a visual direction and polished interface.</p>
+          <p class="mono">I turn the idea into a visual direction and polished interface.</p>
         </li>
         <li class="process-step reveal">
-          <span class="process-num" aria-hidden="true">03</span>
+          <span class="process-num mono" aria-hidden="true">03</span>
           <h3>Build</h3>
-          <p>The approved design becomes a responsive, working website.</p>
+          <p class="mono">The approved design becomes a responsive, working website.</p>
         </li>
         <li class="process-step reveal">
-          <span class="process-num" aria-hidden="true">04</span>
+          <span class="process-num mono" aria-hidden="true">04</span>
           <h3>Refine</h3>
-          <p>Feedback is handled through defined revision rounds.</p>
+          <p class="mono">Feedback is handled through defined revision rounds.</p>
         </li>
         <li class="process-step reveal">
-          <span class="process-num" aria-hidden="true">05</span>
+          <span class="process-num mono" aria-hidden="true">05</span>
           <h3>Launch</h3>
-          <p>The finished website is deployed and ready to use.</p>
+          <p class="mono">The finished website is deployed and ready to use.</p>
         </li>
       </ol>
     </section>
 
-    <!-- ================= ABOUT ================= -->
-    <section class="section" id="about">
-      <div class="section-head reveal">
-        <p class="section-label"><span class="num" aria-hidden="true">04</span>About</p>
+    <!-- =============== MANIFESTO / ABOUT =============== -->
+    <section class="section manifesto" id="about">
+      <div class="section-head reveal" data-reveal="mask">
+        <p class="section-label mono"><span class="num" aria-hidden="true">04</span>About</p>
         <h2>Why work with me?</h2>
-        <p class="section-sub">I'm Dan — a designer and developer. I have one rule: every page should have a job to do, and I build it to do it.</p>
       </div>
-
-      <div class="why-grid">
-        <article class="why-card reveal">
-          <span class="why-index" aria-hidden="true">i.</span>
+      <div class="manifesto-statement reveal" data-reveal="fade">
+        <p class="big-text">
+          Every page should have a job to do.
+          I design the page <em>and</em> build it.
+        </p>
+      </div>
+      <div class="cap-grid">
+        <article class="cap-card reveal" data-reveal="line">
+          <span class="cap-idx" aria-hidden="true">i.</span>
           <h3>Custom, not copied</h3>
           <p>No templates. Each project is designed around its purpose — the layout, copy, and structure follow the job the page needs to do, not a stock pattern.</p>
         </article>
-        <article class="why-card reveal">
-          <span class="why-index" aria-hidden="true">ii.</span>
+        <article class="cap-card reveal" data-reveal="line">
+          <span class="cap-idx" aria-hidden="true">ii.</span>
           <h3>Design + development</h3>
           <p>One person does both, end to end: designed, built, deployed. No throwaway mockups — what you approve is what gets shipped.</p>
         </article>
-        <article class="why-card reveal">
-          <span class="why-index" aria-hidden="true">iii.</span>
+        <article class="cap-card reveal" data-reveal="line">
+          <span class="cap-idx" aria-hidden="true">iii.</span>
           <h3>Direct communication</h3>
           <p>One person, one reply. You talk to the person doing the work — not an account manager relaying to a team. Straight answers, faster.</p>
         </article>
-        <article class="why-card reveal">
-          <span class="why-index" aria-hidden="true">iv.</span>
+        <article class="cap-card reveal" data-reveal="line">
+          <span class="cap-idx" aria-hidden="true">iv.</span>
           <h3>Honest scope</h3>
-          <p>Websites, landing pages, and UI. If your project needs a complex backend I can't deliver well, I'll tell you before we start — and point you somewhere that can.</p>
+          <p>If your project needs a complex backend I can't deliver well, I'll tell you before we start — and point you somewhere that can.</p>
         </article>
       </div>
-
-      <div class="scope-note reveal">
-        <p>Not sure if we're a fit? I'd rather tell you "this isn't my lane" up front than take your money and disappear. If I can't build it well, I'll point you somewhere that can.</p>
+      <div class="scope-note reveal" data-reveal="fade">
+        <p class="italic">Not sure if we're a fit? I'd rather say "this isn't my lane" up front than take your money and disappear. If I can't build it well, I'll point you somewhere that can.</p>
       </div>
-
-      <div class="proof-bar reveal">
-        <p>This site is a working example of the approach: no frameworks, no build step, shipped as a handful of static files — responsive, keyboard-accessible, and fast to load.</p>
+      <div class="proof-bar reveal" data-reveal="fade">
+        <p class="mono">This site is a working example of the approach: no frameworks, no build step, shipped as a handful of static files — responsive, keyboard-accessible, and fast to load.</p>
       </div>
     </section>
 
-    <!-- ================= PRICING ================= -->
+    <!-- =============== EXPERIMENTAL =============== -->
+    <section class="kinetic" id="experiment">
+      <div class="kinetic-sticky">
+        <div class="kinetic-bg" aria-hidden="true">
+          <span class="kinetic-word" data-plx="-0.2">SHIP IT</span>
+        </div>
+        <div class="kinetic-readout mono" aria-hidden="true">
+          <span id="kineticState">01 — ASSEMBLING</span>
+        </div>
+        <p class="kinetic-copy reveal" data-reveal="fade">
+          From idea to production — the build assembles, layers unlock, and the site ships.
+        </p>
+      </div>
+    </section>
+
+    <!-- =============== PRICING =============== -->
     <section class="section" id="pricing">
-      <div class="section-head reveal">
-        <p class="section-label"><span class="num" aria-hidden="true">05</span>Pricing</p>
+      <div class="section-head reveal" data-reveal="mask">
+        <p class="section-label mono"><span class="num" aria-hidden="true">05</span>Pricing</p>
         <h2>Clear, scoped pricing.</h2>
         <p class="section-sub">Every project includes a defined brief, design, build, and two revision rounds.</p>
       </div>
-
       <div class="pricing-grid">
         <article class="price-card reveal">
           <h3>Landing Page</h3>
-          <p class="price-from">From <span class="price-amount">$150</span></p>
+          <p class="price-from mono">FROM</p>
+          <p class="price-amount">$150</p>
           <p class="price-desc">One page, one goal. Custom copy, structure, and design aimed at a single action.</p>
-          <ul class="price-perks">
+          <ul class="price-perks mono">
             <li>1 page · custom copy + design</li>
             <li>Form or CTA path included</li>
             <li>SEO essentials (titles, meta, OG)</li>
@@ -256,15 +310,15 @@
             <li>Deployment available</li>
             <li>2 revision rounds</li>
           </ul>
-          <button class="btn btn-ghost" data-open-form>Get a landing page estimate →</button>
+          <button class="btn btn-ghost" data-open-form>Get a landing page estimate &rarr;</button>
         </article>
-
         <article class="price-card featured reveal">
-          <span class="price-badge">Recommended</span>
+          <span class="price-badge mono">RECOMMENDED</span>
           <h3>Business Website</h3>
-          <p class="price-from">From <span class="price-amount">$300</span></p>
+          <p class="price-from mono">FROM</p>
+          <p class="price-amount">$300</p>
           <p class="price-desc">A complete web presence — typically 3–5 pages (Home, About, Services, Contact, and whatever else the business needs).</p>
-          <ul class="price-perks">
+          <ul class="price-perks mono">
             <li>3–5 pages · custom copy + design</li>
             <li>Contact form wired to email</li>
             <li>SEO essentials (titles, meta, OG, sitemap)</li>
@@ -273,65 +327,56 @@
             <li>Deployment available</li>
             <li>2 revision rounds</li>
           </ul>
-          <button class="btn btn-primary" data-open-form>Get a website estimate →</button>
+          <button class="btn btn-primary" data-open-form>Get a website estimate &rarr;</button>
         </article>
-
         <article class="price-card reveal">
           <h3>Custom Project</h3>
-          <p class="price-from">Let's talk</p>
+          <p class="price-from mono">LET'S TALK</p>
           <p class="price-desc">For more complex requirements and bigger ideas.</p>
-          <ul class="price-perks">
+          <ul class="price-perks mono">
             <li>Custom UI</li>
             <li>Advanced interactions</li>
             <li>Web applications</li>
             <li>Larger websites</li>
             <li>Special integrations</li>
           </ul>
-          <button class="btn btn-ghost" data-open-form>Let's talk about your idea →</button>
+          <button class="btn btn-ghost" data-open-form>Let's talk about your idea &rarr;</button>
         </article>
       </div>
-
-      <p class="pricing-note reveal">Prices are a starting point and depend on the final scope — we agree on the exact page count and deliverables in the brief before any work starts. Domains, hosting, and maintenance are handled separately so you retain what you pay for.</p>
+      <p class="pricing-note reveal" data-reveal="fade">Prices are a starting point and depend on the final scope — we agree on the exact page count and deliverables in the brief before any work starts. Domains, hosting, and maintenance are handled separately so you retain what you pay for.</p>
     </section>
 
-    <!-- ================= FAQ ================= -->
+    <!-- =============== FAQ =============== -->
     <section class="section" id="faq">
-      <div class="section-head reveal">
-        <p class="section-label"><span class="num" aria-hidden="true">06</span>FAQ</p>
+      <div class="section-head reveal" data-reveal="mask">
+        <p class="section-label mono"><span class="num" aria-hidden="true">06</span>FAQ</p>
         <h2>Questions, answered.</h2>
       </div>
-
       <div class="faq-list">
         <details class="faq-item reveal">
           <summary>What's included in a website?</summary>
           <p>A custom design, responsive implementation that works across modern devices, and deployment so it's live. The exact scope depends on the package you choose.</p>
         </details>
-
         <details class="faq-item reveal">
           <summary>How long does a project take?</summary>
           <p>The timeline depends on the scope, but you'll get a realistic estimate after the brief. Landing pages and single-page sites move fastest.</p>
         </details>
-
         <details class="faq-item reveal">
           <summary>How do revisions work?</summary>
           <p>Each package includes two revision rounds on the design. Revisions are feedback-based and handled in defined rounds. Additional rounds are treated as extra scope.</p>
         </details>
-
         <details class="faq-item reveal">
           <summary>Do you provide hosting?</summary>
           <p>Deployment is available on the chosen package. The domain is not included. Hosting is set up and explained during the project; you'll own your site and content. Renewal costs are handled directly by you through the hosting provider.</p>
         </details>
-
         <details class="faq-item reveal">
           <summary>Can you redesign an existing website?</summary>
           <p>Yes. A redesign starts with reviewing what you have and works from there. It's a good fit for the custom project pricing.</p>
         </details>
-
         <details class="faq-item reveal">
           <summary>Can I request a custom project?</summary>
           <p>Yes — if it fits the scope of what I build. Start a project and describe what you need; if it's not a fit, I'll tell you honestly.</p>
         </details>
-
         <details class="faq-item reveal">
           <summary>How do I start?</summary>
           <p>Click Start a Project, fill out the brief, and send it. It takes a couple of minutes, with no commitment — you'll hear back with next steps and an estimated scope.</p>
@@ -339,14 +384,15 @@
       </div>
     </section>
 
-    <!-- ================= FINAL CTA ================= -->
+    <!-- =============== FINAL CTA =============== -->
     <section class="final-cta">
-      <div class="final-cta-inner reveal">
-        <p class="section-label"><span class="num" aria-hidden="true">→</span>Start a project</p>
-        <h2>Have something in mind?</h2>
-        <p>Tell me what you're building. Whether it's a new business website, a landing page, or a custom interface, start by explaining what you need.</p>
+      <div class="final-cta-inner reveal" data-reveal="fade">
+        <h2 class="final-headline">
+          <span>LET'S BUILD</span>
+          <span class="em">WHAT COMES NEXT.</span>
+        </h2>
         <div class="final-cta-actions">
-          <button class="btn btn-primary btn-lg" data-open-form>Tell me what you're building →</button>
+          <button class="btn btn-primary btn-lg" data-open-form>Tell me what you're building <span aria-hidden="true">&rarr;</span></button>
           <a href="#work" class="btn btn-ghost btn-lg">See the work first</a>
         </div>
       </div>
@@ -354,43 +400,41 @@
 
   </main>
 
+  <!-- =============== FOOTER =============== -->
   <footer class="footer">
-    <a href="#top" class="logo">Dan<span class="dot">.</span></a>
-    <nav class="footer-links">
+    <div class="footer-wordmark" aria-hidden="true">
+      <span class="fm">DAN<span class="dot">.</span>DESIGNS</span>
+    </div>
+    <nav class="footer-links" aria-label="Footer navigation">
       <a href="#work">Work</a>
       <a href="#services">Services</a>
       <a href="#process">Process</a>
       <a href="#about">About</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <p class="footer-note">© 2026 Dan. Web Design · UI · Development.</p>
+    <p class="footer-meta mono">&copy; 2026 DAN. WEB DESIGN · UI · DEVELOPMENT. CHI&#536;IN&#258;U, MD.</p>
   </footer>
 
-  <!-- ================= COMMISSION FORM MODAL ================= -->
+  <!-- =============== FORM MODAL =============== -->
   <div class="modal" id="formModal" role="dialog" aria-modal="true" aria-labelledby="formModalTitle" hidden>
     <div class="modal-backdrop" data-close-form></div>
     <div class="modal-panel">
-      <button class="modal-close" data-close-form aria-label="Close">✕</button>
-
+      <button class="modal-close" data-close-form aria-label="Close">&times;</button>
       <div id="formView">
         <h2 id="formModalTitle">Start a project</h2>
         <p class="modal-sub">Tell me what you're building — it takes about two minutes, no commitment. You'll hear back with next steps and an estimated scope.</p>
-
         <form id="commissionForm" novalidate>
           <div class="form-errors" id="formErrors" role="alert" tabindex="-1" hidden></div>
-
           <div class="field">
             <label for="f-name">Name</label>
             <input type="text" id="f-name" name="name" autocomplete="name" required>
             <label class="error-text" id="f-name-error" for="f-name">Please enter your name.</label>
           </div>
-
           <div class="field">
             <label for="f-email">Email</label>
             <input type="email" id="f-email" name="email" autocomplete="email" required>
             <label class="error-text" id="f-email-error" for="f-email">Please enter a valid email address.</label>
           </div>
-
           <div class="field-row">
             <div class="field">
               <label for="f-type">Project type</label>
@@ -416,29 +460,24 @@
               </select>
             </div>
           </div>
-
           <div class="field">
             <label for="f-desc">What do you need?</label>
             <textarea id="f-desc" name="description" rows="5" required></textarea>
             <label class="error-text" id="f-desc-error" for="f-desc">Please describe your project (at least a couple of sentences).</label>
           </div>
-
           <div class="field">
             <label for="f-refs">Reference websites <span class="opt">(optional)</span></label>
             <input type="text" id="f-refs" name="references">
           </div>
-
           <div class="field">
             <label for="f-deadline">Deadline <span class="opt">(optional)</span></label>
             <input type="text" id="f-deadline" name="deadline" placeholder="e.g. In four weeks">
           </div>
-
-          <button type="submit" class="btn btn-primary btn-lg btn-block">Send Project Request →</button>
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Send Project Request &rarr;</button>
         </form>
       </div>
-
       <div id="sentView" hidden>
-        <div class="sent-mark" aria-hidden="true">✓</div>
+        <div class="sent-mark" aria-hidden="true">&check;</div>
         <h2 tabindex="-1">Request received.</h2>
         <p class="modal-sub">Thanks for reaching out. I'll review your brief and get back to you with next steps and a quote.</p>
         <button class="btn btn-ghost btn-block" data-close-form>Done</button>
@@ -446,15 +485,22 @@
     </div>
   </div>
 
-  <!-- ================= PROJECT MODAL ================= -->
+  <!-- =============== PROJECT MODAL =============== -->
   <div class="modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle" hidden>
     <div class="modal-backdrop" data-close-project></div>
     <div class="modal-panel">
-      <button class="modal-close" data-close-project aria-label="Close">✕</button>
+      <button class="modal-close" data-close-project aria-label="Close">&times;</button>
       <div id="projectContent"></div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+    }
+  }
+  </script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
