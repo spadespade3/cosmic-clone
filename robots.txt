@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://spadespade3.github.io/dandesigns/sitemap.xml

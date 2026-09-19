@@ -69,6 +69,8 @@ import * as THREE from 'three';
       themeBtn.setAttribute('aria-pressed', String(!!light));
       themeBtn.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
     }
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeMeta) themeMeta.setAttribute('content', light ? '#f4f2ec' : '#09090a');
   }
 
   if (themeBtn) {
