@@ -18,12 +18,6 @@ import * as THREE from 'three';
   if (reducedMotion) docEl.classList.add('rm');
   const finePointer = window.matchMedia('(any-pointer: fine)').matches;
 
-  const CONFIG = {
-    accessKey: '204761c7-4073-4e7c-a6c1-3ce6e6f21801',
-    contactEmail: 'dan.designs1@outlook.com'
-  };
-  const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
-
   const $ = (id) => document.getElementById(id);
 
   /* ============================================================
@@ -262,6 +256,7 @@ import * as THREE from 'three';
     const id = a.getAttribute('href').slice(1);
     if (!id || !document.getElementById(id)) return;
     e.preventDefault();
+    if (typeof projectModal !== 'undefined' && projectModal && !projectModal.hidden) closeModal(projectModal);
     a.classList.add('is-clicked');
     setTimeout(() => a.classList.remove('is-clicked'), 500);
     if (navLinks.classList.contains('open')) {
@@ -335,7 +330,6 @@ import * as THREE from 'three';
   /* ============================================================
      MODALS + FOCUS TRAP
      ============================================================ */
-  const formModal = $('formModal');
   const projectModal = $('projectModal');
   let lastFocused = null;
 
@@ -347,14 +341,12 @@ import * as THREE from 'three';
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      if (!formModal.hidden) closeModal(formModal);
-      else if (!projectModal.hidden) closeModal(projectModal);
+      if (!projectModal.hidden) closeModal(projectModal);
       return;
     }
     if (e.key !== 'Tab') return;
-    const activeModal = (!formModal.hidden) ? formModal : ((!projectModal.hidden) ? projectModal : null);
-    if (!activeModal) return;
-    const f = getFocusable(activeModal);
+    if (projectModal.hidden) return;
+    const f = getFocusable(projectModal);
     if (!f.length) return;
     if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
     else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
@@ -375,9 +367,45 @@ import * as THREE from 'three';
     if (lastFocused) lastFocused.focus();
   }
 
-  document.querySelectorAll('[data-close-form]').forEach((el) => el.addEventListener('click', () => closeModal(formModal)));
   document.querySelectorAll('[data-close-project]').forEach((el) => el.addEventListener('click', () => closeModal(projectModal)));
-  document.addEventListener('click', (e) => { if (e.target.closest('[data-open-form]')) openFormModal(); });
+
+  document.addEventListener('keydown', (e) => {
+    const copyBtn = e.target.closest('[data-copy]');
+    if (copyBtn && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      copyBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    const copyBtn = e.target.closest('[data-copy]');
+    if (copyBtn) {
+      const text = copyBtn.getAttribute('data-copy') || '';
+      const done = (ok) => {
+        const label = copyBtn.querySelector('.copy-label');
+        if (!label) return;
+        const original = label.textContent;
+        if (ok) label.textContent = 'COPIED \u2713';
+        copyBtn.classList.toggle('copied', ok);
+        setTimeout(() => {
+          label.textContent = original;
+          copyBtn.classList.remove('copied');
+        }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => done(true)).catch(() => done(false));
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); done(true); } catch (err) { done(false); }
+        ta.remove();
+      }
+    }
+  });
 
   /* ============================================================
      WORK DATA (honest: no fabricated clients)
@@ -417,13 +445,13 @@ import * as THREE from 'three';
       tag: 'Practice Project',
       image: 'assets/shots/commission-studio.png',
       imageAlt: 'Preview of the Commission Studio site (this website)',
-      desc: 'The site you are looking at right now — a conversion-focused build with services, process, pricing, and a working brief form.',
+      desc: 'The site you are looking at right now — a conversion-focused build with services, process, pricing, and direct contact channels.',
       challenge: 'A visual-only concept needed to become a fully functional business site with a real path from visitor to inquiry.',
-      direction: 'Full landing structure: hero, portfolio, services, process, pricing, FAQ, and a project request form.',
-      build: 'Static site with interactive portfolio cards, detail modals, and a submission form wired to an email endpoint.',
-      result: 'A working, deployed site — visitor to inquiry flow is live, from landing page through to a form that actually delivers briefs.',
-      tech: ['HTML', 'CSS', 'JavaScript', 'Web3Forms'],
-      perks: ['Conversion-focused structure', 'Working project form', 'Accessible and responsive']
+      direction: 'Full landing structure: hero, portfolio, services, process, pricing, FAQ, and a contact section with direct channels.',
+      build: 'Static site with interactive portfolio cards, detail modals, and a contact section linking every direct channel.',
+      result: 'A working, deployed site — visitor to inquiry flow is live, from landing page through to direct contact on email, WhatsApp, Telegram, and Discord.',
+      tech: ['HTML', 'CSS', 'JavaScript'],
+      perks: ['Conversion-focused structure', 'Direct contact channels', 'Accessible and responsive']
     }
   ];
 
@@ -469,130 +497,11 @@ import * as THREE from 'three';
           <h4>Tools &amp; technologies</h4>
           <ul class="pd-tech">${p.tech.map((t) => `<li>${t}</li>`).join('')}</ul>
         </div>
-        <button class="btn btn-primary btn-block" data-open-form>Start a Project &rarr;</button>
+        <a href="#contact" class="btn btn-primary btn-block">Start a Project &rarr;</a>
       </div>`;
     projectModal.hidden = false;
     openModal(projectModal);
   }
-
-  /* ---------- form modal ---------- */
-  function openFormModal() {
-    const form = $('commissionForm');
-    $('formView').hidden = false;
-    $('sentView').hidden = true;
-    if (form) form.reset();
-    clearAllFieldErrors();
-    openModal(formModal);
-  }
-
-  /* ============================================================
-     FORM VALIDATION + SUBMISSION
-     ============================================================ */
-  const form = $('commissionForm');
-  const errorsBox = $('formErrors');
-  const formView = $('formView');
-  const sentView = $('sentView');
-  const submitBtn = form.querySelector('button[type="submit"]');
-
-  const MSG = {
-    name: 'Please enter your name.',
-    email: 'Please enter a valid email address.',
-    type: 'Please choose a project type.',
-    desc: 'Please describe your project (at least a couple of sentences).'
-  };
-
-  const fields = {
-    name: { el: $('f-name'), error: $('f-name-error'), validate: (v) => v.trim().length >= 2 },
-    email: { el: $('f-email'), error: $('f-email-error'), validate: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) },
-    type: { el: $('f-type'), error: $('f-type-error'), validate: (v) => v !== '' },
-    desc: { el: $('f-desc'), error: $('f-desc-error'), validate: (v) => v.trim().length >= 20 },
-    budget: { el: $('f-budget'), error: null, validate: () => true },
-    references: { el: $('f-refs'), error: null, validate: () => true },
-    deadline: { el: $('f-deadline'), error: null, validate: () => true }
-  };
-
-  function validateField(name) {
-    const f = fields[name];
-    const ok = f.validate(f.el.value);
-    f.el.classList.toggle('invalid', !ok);
-    if (f.error) f.error.classList.toggle('show', !ok);
-    return ok;
-  }
-
-  function clearFieldError(name) {
-    const f = fields[name];
-    f.el.classList.remove('invalid');
-    if (f.error) f.error.classList.remove('show');
-  }
-
-  function clearAllFieldErrors() {
-    Object.keys(fields).forEach(clearFieldError);
-    errorsBox.hidden = true;
-  }
-
-  Object.keys(fields).forEach((name) => {
-    const f = fields[name];
-    f.el.addEventListener('input', () => clearFieldError(name));
-    f.el.addEventListener('change', () => clearFieldError(name));
-  });
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    clearAllFieldErrors();
-
-    const invalid = Object.keys(fields).filter((name) => {
-      const bad = !validateField(name);
-      return bad && fields[name].error;
-    });
-
-    if (invalid.length) {
-      errorsBox.innerHTML = `<p>There is a problem</p>${invalid.map((n) => `<a href="#${fields[n].el.id}">${MSG[n]}</a>`).join('')}`;
-      errorsBox.hidden = false;
-      errorsBox.focus();
-      return;
-    }
-
-    const payload = {
-      access_key: CONFIG.accessKey,
-      subject: 'New project request — Dan site',
-      from_name: 'Dan website form',
-      name: fields.name.el.value.trim(),
-      email: fields.email.el.value.trim(),
-      project_type: fields.type.el.value,
-      budget: fields.budget.el.value || 'Not specified',
-      description: fields.desc.el.value.trim(),
-      references: fields.references.el.value || 'None',
-      deadline: fields.deadline.el.value || 'No deadline'
-    };
-
-    const originalLabel = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending…';
-
-    try {
-      if (CONFIG.accessKey.includes('YOUR-ACCESS-KEY')) throw new Error('Form is not connected yet — edit CONFIG.accessKey in script.js');
-      const res = await fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      if (!res.ok || data.success !== true) throw new Error('The request could not be sent right now.');
-
-      formView.hidden = true;
-      sentView.hidden = false;
-      sentView.querySelector('h2').focus({ preventScroll: true });
-      form.reset();
-    } catch (err) {
-      clearAllFieldErrors();
-      errorsBox.innerHTML = `<p>Couldn't send your request.</p><a href="mailto:${CONFIG.contactEmail}">${err.message} Email me directly instead &rarr;</a>`;
-      errorsBox.hidden = false;
-      errorsBox.focus();
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalLabel;
-    }
-  });
 
   /* ============================================================
      THREE.JS — interactive layered object
